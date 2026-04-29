@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HireFlow — AI Candidate Screening for Irish Tech SMEs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;0,700;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ─── RESET & TOKENS ───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:        #f7f5f0;
+  --surface:   #ffffff;
+  --ink:       #1a1a18;
+  --muted:     #6b6b60;
+  --accent:    #1a6b3c;
+  --accent2:   #e8f5ee;
+  --border:    #e2dfd8;
+  --bot-bg:    #f0ede8;
+  --user-bg:   #1a6b3c;
+  --danger:    #c0392b;
+  --radius:    16px;
+  --shadow:    0 2px 24px rgba(26,26,24,0.09);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── LANDING PAGE ─────────────────────────────────────────── */
+#landing {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 48px;
+  border-bottom: 1px solid var(--border);
+}
+
+.logo-text {
+  font-family: 'Fraunces', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.5px;
+}
+
+.logo-text em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.nav-badge {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--accent2);
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid #b8dfc8;
+}
+
+/* HERO */
+.hero {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, #d4ead9 0%, transparent 70%);
+  top: -100px; right: -100px;
+  z-index: 0;
+  border-radius: 50%;
+}
+
+.hero-content {
+  max-width: 640px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.8s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero-eyebrow {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-sub {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 480px;
+  margin: 0 auto 40px;
+  font-weight: 300;
+}
+
+.cta-group {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  background: #155730;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(26,107,60,0.25);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--border);
+  padding: 14px 32px;
+  border-radius: 100px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+/* STATS STRIP */
+.stats-strip {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  border-top: 1px solid var(--border);
+  animation: fadeUp 1s ease 0.2s both;
+}
+
+.stat {
+  flex: 1;
+  max-width: 200px;
+  text-align: center;
+  padding: 28px 20px;
+  border-right: 1px solid var(--border);
+}
+
+.stat:last-child { border-right: none; }
+
+.stat-num {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--accent);
+  display: block;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* HOW IT WORKS */
+.how-section {
+  padding: 80px 48px;
+  max-width: 1000px;
+  margin: 0 auto;
+  animation: fadeUp 1s ease 0.3s both;
+}
+
+.section-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 48px;
+  letter-spacing: -0.5px;
+}
+
+.pipeline {
+  display: flex;
+  gap: 0;
+  position: relative;
+}
+
+.pipeline::before {
+  content: '';
+  position: absolute;
+  top: 36px;
+  left: 36px;
+  right: 36px;
+  height: 1.5px;
+  background: var(--border);
+  z-index: 0;
+}
+
+.pipeline-step {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  padding: 0 8px;
+}
+
+.step-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-size: 1.4rem;
+  transition: all 0.3s;
+}
+
+.pipeline-step:hover .step-circle {
+  border-color: var(--accent);
+  background: var(--accent2);
+  transform: scale(1.08);
+}
+
+.step-name {
+  font-family: 'Fraunces', serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.step-desc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* TRUST BAR */
+.trust-bar {
+  background: var(--ink);
+  color: #fff;
+  padding: 20px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #c8c8c0;
+}
+
+.trust-item strong { color: #fff; font-weight: 600; }
+
+/* ─── CHAT PAGE ─────────────────────────────────────────────── */
+#chatPage {
+  display: none;
+  min-height: 100vh;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.chat-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.chat-nav .logo-text { font-size: 1.2rem; }
+
+.progress-container {
+  flex: 1;
+  max-width: 280px;
+  margin: 0 24px;
+}
+
+.progress-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.progress-track {
+  height: 4px;
+  background: var(--border);
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 100px;
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+  width: 0%;
+}
+
+.gdpr-chip {
+  font-size: 0.75rem;
+  color: var(--accent);
+  background: var(--accent2);
+  border: 1px solid #b8dfc8;
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-weight: 500;
+}
+
+/* CHAT AREA */
+.chat-main {
+  flex: 1;
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 20px 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.msg {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  animation: msgIn 0.3s ease both;
+}
+
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.msg.bot { align-self: flex-start; max-width: 82%; }
+.msg.user { align-self: flex-end; max-width: 82%; flex-direction: row-reverse; }
+
+.avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  font-family: 'Fraunces', serif;
+}
+
+.msg.bot .avatar {
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.7rem;
+  letter-spacing: -0.5px;
+}
+
+.msg.user .avatar {
+  background: var(--border);
+  color: var(--muted);
+}
+
+.bubble {
+  padding: 14px 18px;
+  border-radius: 18px;
+  font-size: 0.92rem;
+  line-height: 1.65;
+  color: var(--ink);
+  white-space: pre-wrap;
+}
+
+.msg.bot .bubble {
+  background: var(--bot-bg);
+  border-bottom-left-radius: 4px;
+}
+
+.msg.user .bubble {
+  background: var(--user-bg);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+/* TYPING */
+.typing-wrap {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  animation: msgIn 0.3s ease both;
+}
+
+.typing-dots {
+  background: var(--bot-bg);
+  border-radius: 18px;
+  border-bottom-left-radius: 4px;
+  padding: 14px 18px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.typing-dots span {
+  width: 7px; height: 7px;
+  background: #aaa9a0;
+  border-radius: 50%;
+  animation: typingBounce 1.3s infinite;
+}
+
+.typing-dots span:nth-child(2) { animation-delay: 0.18s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes typingBounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-7px); }
+}
+
+/* SUMMARY CARD */
+.summary-card {
+  background: var(--surface);
+  border: 1.5px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  margin-top: 4px;
+  animation: msgIn 0.4s ease both;
+}
+
+.summary-card h4 {
+  font-family: 'Fraunces', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.summary-card p {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+/* INPUT DOCK */
+.input-dock {
+  position: fixed;
+  bottom: 0;
+  left: 0; right: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 14px 20px;
+  z-index: 10;
+}
+
+.input-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+textarea#userInput {
+  flex: 1;
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.92rem;
+  resize: none;
+  outline: none;
+  color: var(--ink);
+  background: var(--bg);
+  max-height: 120px;
+  min-height: 48px;
+  line-height: 1.5;
+  transition: border-color 0.2s;
+}
+
+textarea#userInput:focus { border-color: var(--accent); }
+
+textarea#userInput::placeholder { color: #b0afa8; }
+
+button#sendBtn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  width: 48px; height: 48px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button#sendBtn:hover { background: #155730; transform: scale(1.05); }
+button#sendBtn:disabled { background: #c8c8c0; cursor: not-allowed; transform: none; }
+
+/* ─── CONFIG MODAL ──────────────────────────────────────────── */
+#configModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(26,26,24,0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+  animation: fadeIn 0.2s ease both;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal-box {
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 36px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease both;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+.modal-box h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+
+.modal-box p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.field label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 8px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.field input {
+  width: 100%;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  color: var(--ink);
+  background: var(--bg);
+  margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+
+.field input:focus { border-color: var(--accent); }
+
+.modal-note {
+  font-size: 0.78rem;
+  color: #a0a09a;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.modal-note a { color: var(--accent); text-decoration: none; }
+
+.modal-actions { display: flex; gap: 10px; }
+
+.btn-modal-go {
+  flex: 1;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-modal-go:hover { background: #155730; }
+
+.btn-modal-cancel {
+  background: transparent;
+  color: var(--muted);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 13px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-modal-cancel:hover { border-color: var(--muted); }
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  nav, .hero, .trust-bar { padding-left: 20px; padding-right: 20px; }
+  .hero { padding-top: 48px; padding-bottom: 48px; }
+  .pipeline { flex-wrap: wrap; gap: 24px; }
+  .pipeline::before { display: none; }
+  .pipeline-step { min-width: 45%; }
+  .stats-strip { flex-wrap: wrap; }
+  .stat { min-width: 45%; border-right: none; border-bottom: 1px solid var(--border); }
+  .how-section { padding: 48px 20px; }
+  .trust-bar { gap: 20px; }
+  .chat-nav { padding: 14px 16px; }
+  .progress-container { max-width: 140px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ═══════════════ LANDING PAGE ═══════════════ -->
+<div id="landing">
+
+  <nav>
+    <div class="logo-text">Hire<em>Flow</em></div>
+    <span class="nav-badge">🇮🇪 Built for Irish Tech SMEs</span>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Agentic Recruitment · Powered by Claude AI</p>
+      <h1>Stop losing great<br><em>candidates</em> to silence.</h1>
+      <p class="hero-sub">HireFlow's five AI agents research, design, screen, communicate, and manage your hiring — so your best candidates get a response in under 2 hours, not 2 weeks.</p>
+      <div class="cta-group">
+        <button class="btn-primary" onclick="openChatSetup()">Try Live Screening Demo →</button>
+        <a href="#how" class="btn-secondary">See how it works</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-strip">
+    <div class="stat"><span class="stat-num">47</span><div class="stat-label">Avg. days to hire for Irish SMEs</div></div>
+    <div class="stat"><span class="stat-num">67%</span><div class="stat-label">Candidates ghost after 48hrs silence</div></div>
+    <div class="stat"><span class="stat-num">&lt;2hr</span><div class="stat-label">HireFlow first response time</div></div>
+    <div class="stat"><span class="stat-num">€300</span><div class="stat-label">Per month — no agency fees</div></div>
+  </div>
+
+  <div class="how-section" id="how">
+    <p class="section-label">The HireFlow Pipeline</p>
+    <h2 class="section-title">Five agents. One unbroken chain.</h2>
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <div class="step-circle">🔍</div>
+        <div class="step-name">Riona<br><small style="font-family:DM Sans;font-size:0.7rem;color:var(--muted);font-weight:400">Researcher</small></div>
+        <p class="step-desc">Analyses the Irish talent market and identifies where candidates drop off</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-circle">🎨</div>
+        <div class="step-name">Declan<br><small style="font-family:DM Sans;font-size:0.7rem;color:var(--muted);font-weight:400">Designer</small></div>
+        <p class="step-desc">Designs candidate personas, journey maps, and screening conversation flows</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-circle">⚙️</div>
+        <div class="step-name">Máire<br><small style="font-family:DM Sans;font-size:0.7rem;color:var(--muted);font-weight:400">Maker</small></div>
+        <p class="step-desc">Builds the working chatbot prototype and technical infrastructure</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-circle">📣</div>
+        <div class="step-name">Ciarán<br><small style="font-family:DM Sans;font-size:0.7rem;color:var(--muted);font-weight:400">Communicator</small></div>
+        <p class="step-desc">Crafts go-to-market messaging, LinkedIn content, and nurture emails</p>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-circle">📊</div>
+        <div class="step-name">Sinéad<br><small style="font-family:DM Sans;font-size:0.7rem;color:var(--muted);font-weight:400">Manager</small></div>
+        <p class="step-desc">Reviews all outputs, produces ROI projections, and issues the Go/No-Go decision</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="trust-bar">
+    <div class="trust-item">🔒 <strong>GDPR Compliant</strong> — data minimisation by design</div>
+    <div class="trust-item">⚖️ <strong>EU AI Act Ready</strong> — Annex III high-risk compliant</div>
+    <div class="trust-item">👤 <strong>Human-in-the-Loop</strong> — no automated hire/reject decisions</div>
+    <div class="trust-item">🤖 <strong>Powered by Claude</strong> — Anthropic AI</div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ CONFIG MODAL ═══════════════ -->
+<div id="configModal" style="display:none;">
+  <div class="modal-box">
+    <h2>Start Candidate Screening</h2>
+    <p>This demo shows the HireFlow AI screening experience. Enter your Anthropic API key to activate live AI responses, or skip for a guided demo mode.</p>
+
+    <div class="field">
+      <label>Anthropic API Key (optional)</label>
+      <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-…">
+    </div>
+
+    <div class="field">
+      <label>Company Name (for the demo)</label>
+      <input type="text" id="companyInput" placeholder="e.g. Acme Tech Dublin" value="HireFlow Demo Co.">
+    </div>
+
+    <p class="modal-note">⚠️ Your API key is used only in your browser and never stored or sent anywhere except directly to <a href="https://api.anthropic.com" target="_blank">api.anthropic.com</a>. Get a key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>.</p>
+
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" onclick="closeModal()">← Back</button>
+      <button class="btn-modal-go" onclick="startChat()">Begin Screening →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ CHAT PAGE ═══════════════ -->
+<div id="chatPage">
+
+  <div class="chat-nav">
+    <div class="logo-text">Hire<em>Flow</em></div>
+    <div class="progress-container">
+      <div class="progress-label">
+        <span id="progressText">Screening in progress</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+    <div class="gdpr-chip">🔒 GDPR Protected</div>
+  </div>
+
+  <div class="chat-main" id="chatMain"></div>
+
+  <div class="input-dock">
+    <div class="input-inner">
+      <textarea id="userInput" rows="1" placeholder="Type your answer and press Enter…"
+        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
+      <button id="sendBtn" onclick="sendMessage()" title="Send">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════ SCRIPTS ═══════════════ -->
+<script>
+// ── CONFIG ──────────────────────────────────────────────
+let API_KEY = "";
+let COMPANY = "HireFlow Demo Co.";
+let DEMO_MODE = false;
+
+const QUESTIONS = [
+  null,
+  "What drew you specifically to this role at {COMPANY}?",
+  "Tell me about a project or achievement most relevant to this position.",
+  "What tools, technologies, or methods do you use most in your current work?",
+  "How do you prefer to work — structured and process-driven, or flexible and experimental? Tell me why.",
+  "What is your current notice period, and are you open to hybrid or remote working arrangements?",
+  "Is there anything about the role or the company you'd like to know before we wrap up?"
+];
+
+const DEMO_RESPONSES = [
+  "That sounds like a great motivation — passion for the mission really does come through in interviews.",
+  "What a solid example — the hiring team will definitely want to explore that further.",
+  "That's a strong technical foundation — well-matched for what this role typically requires.",
+  "Interesting approach — understanding your working style helps us set you up for success here.",
+  "Perfect, that's all noted — logistics like that are easy to work around with the right candidate.",
+  "Great questions! Those are exactly the kinds of things worth clarifying before you commit to a process."
+];
+
+const OPENING = `Hi there! I'm HireFlow, an AI assistant helping {COMPANY} manage their hiring process.
+
+I'll ask you 6 short questions about your experience and what you're looking for. This takes around 10–15 minutes.
+
+⚠️ Important: I'm an AI. Your answers will be reviewed by a human hiring manager — no automated decisions are made about your application. Your data is handled under GDPR.
+
+Ready to begin? What's your name?`;
+
+// ── STATE ────────────────────────────────────────────────
+let stage = 0;
+let candidateName = "";
+let answers = [];
+let history = [];
+
+// ── MODAL ────────────────────────────────────────────────
+function openChatSetup() {
+  document.getElementById("configModal").style.display = "flex";
+}
+
+function closeModal() {
+  document.getElementById("configModal").style.display = "none";
+}
+
+function startChat() {
+  API_KEY = document.getElementById("apiKeyInput").value.trim();
+  COMPANY = document.getElementById("companyInput").value.trim() || "HireFlow Demo Co.";
+  DEMO_MODE = !API_KEY;
+  closeModal();
+  document.getElementById("landing").style.display = "none";
+  document.getElementById("chatPage").style.display = "flex";
+  document.getElementById("chatPage").style.flexDirection = "column";
+  init();
+}
+
+// ── RENDER ───────────────────────────────────────────────
+function addMsg(role, text) {
+  const main = document.getElementById("chatMain");
+  const wrap = document.createElement("div");
+  wrap.className = `msg ${role}`;
+
+  const av = document.createElement("div");
+  av.className = "avatar";
+  av.textContent = role === "bot" ? "HF" : (candidateName ? candidateName[0].toUpperCase() : "U");
+
+  const bub = document.createElement("div");
+  bub.className = "bubble";
+  bub.textContent = text.replace(/{COMPANY}/g, COMPANY);
+
+  wrap.appendChild(av);
+  wrap.appendChild(bub);
+  main.appendChild(wrap);
+  main.scrollTop = main.scrollHeight;
+}
+
+function showTyping() {
+  const main = document.getElementById("chatMain");
+  const wrap = document.createElement("div");
+  wrap.className = "typing-wrap";
+  wrap.id = "typingWrap";
+  const av = document.createElement("div");
+  av.className = "avatar";
+  av.style.background = "var(--accent)";
+  av.style.color = "#fff";
+  av.style.fontFamily = "Fraunces, serif";
+  av.style.fontSize = "0.7rem";
+  av.textContent = "HF";
+  const dots = document.createElement("div");
+  dots.className = "typing-dots";
+  dots.innerHTML = "<span></span><span></span><span></span>";
+  wrap.appendChild(av);
+  wrap.appendChild(dots);
+  main.appendChild(wrap);
+  main.scrollTop = main.scrollHeight;
+}
+
+function removeTyping() {
+  const el = document.getElementById("typingWrap");
+  if (el) el.remove();
+}
+
+function addSummary(text) {
+  const main = document.getElementById("chatMain");
+  const card = document.createElement("div");
+  card.className = "summary-card";
+  card.innerHTML = `<h4>✅ Candidate Summary — For Hiring Manager Review</h4><p>${text}</p>`;
+  main.appendChild(card);
+  main.scrollTop = main.scrollHeight;
+}
+
+function setProgress(step) {
+  const pct = Math.round((step / 7) * 100);
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressPct").textContent = pct + "%";
+  document.getElementById("progressText").textContent =
+    step === 0 ? "Starting…" :
+    step <= 6 ? `Question ${step} of 6` :
+    "Complete ✓";
+}
+
+// ── API CALLS ────────────────────────────────────────────
+async function callClaude(userMsg) {
+  if (DEMO_MODE) {
+    await new Promise(r => setTimeout(r, 900 + Math.random() * 600));
+    return DEMO_RESPONSES[Math.min(Math.max(stage - 1, 0), DEMO_RESPONSES.length - 1)];
+  }
+  history.push({ role: "user", content: userMsg });
+  const sys = `You are HireFlow, a warm and professional AI screening assistant for ${COMPANY}.
+The candidate's name is ${candidateName}. Keep your response to 2–3 sentences maximum.
+Acknowledge their answer briefly and warmly. Never evaluate or score. Be encouraging and human.
+Do NOT ask the next question — that will be added separately.`;
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-api-key": API_KEY, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
+    body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 150, system: sys, messages: history })
+  });
+  const data = await res.json();
+  const reply = data.content[0].text;
+  history.push({ role: "assistant", content: reply });
+  return reply;
+}
+
+async function generateSummary() {
+  if (DEMO_MODE) {
+    await new Promise(r => setTimeout(r, 1200));
+    return `${candidateName} presented as a motivated and articulate candidate with relevant hands-on experience in their stated domain. Their project example demonstrated initiative and measurable impact — worth exploring further in a structured interview. They appear flexible on working arrangements, which is a practical positive. The hiring manager should probe their experience with cross-functional collaboration and long-term career direction. Overall: a promising profile that merits a first-stage interview invitation.`;
+  }
+  const prompt = `You are a professional recruitment assistant. Write a 4–5 sentence candidate summary for a human hiring manager reviewing ${candidateName}'s application. Note genuine strengths and areas to probe further in interview. Do NOT make a hire/no-hire recommendation. Professional tone, plain paragraph.\n\nScreening answers:\n${answers.map((a, i) => `Q${i+1}: ${QUESTIONS[i+1].replace(/{COMPANY}/g, COMPANY)}\nA: ${a}`).join("\n\n")}`;
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-api-key": API_KEY, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true" },
+    body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 300, messages: [{ role: "user", content: prompt }] })
+  });
+  const data = await res.json();
+  return data.content[0].text;
+}
+
+// ── FLOW ─────────────────────────────────────────────────
+function init() {
+  addMsg("bot", OPENING.replace(/{COMPANY}/g, COMPANY));
+  setProgress(0);
+  document.getElementById("userInput").focus();
+}
+
+async function sendMessage() {
+  const input = document.getElementById("userInput");
+  const btn = document.getElementById("sendBtn");
+  const text = input.value.trim();
+  if (!text || btn.disabled) return;
+
+  input.value = "";
+  btn.disabled = true;
+  addMsg("user", text);
+
+  // Step 0: get name
+  if (stage === 0) {
+    candidateName = text.split(" ")[0];
+    stage = 1;
+    setProgress(1);
+    showTyping();
+    await new Promise(r => setTimeout(r, 700));
+    removeTyping();
+    addMsg("bot", `Great to meet you, ${candidateName}! Let's begin.\n\nQuestion 1 of 6:\n${QUESTIONS[1].replace(/{COMPANY}/g, COMPANY)}`);
+    btn.disabled = false;
+    input.focus();
+    return;
+  }
+
+  // Steps 1–5: answer + next question
+  if (stage >= 1 && stage <= 5) {
+    answers.push(text);
+    showTyping();
+    const ack = await callClaude(text);
+    removeTyping();
+    stage++;
+    setProgress(stage);
+    addMsg("bot", `${ack}\n\nQuestion ${stage} of 6:\n${QUESTIONS[stage].replace(/{COMPANY}/g, COMPANY)}`);
+    btn.disabled = false;
+    input.focus();
+    return;
+  }
+
+  // Step 6: final question answer
+  if (stage === 6) {
+    answers.push(text);
+    showTyping();
+    const ack = await callClaude(text);
+    removeTyping();
+    stage = 7;
+    setProgress(7);
+    addMsg("bot", `${ack}\n\nThank you, ${candidateName} — that's all 6 questions done. I'm now preparing your candidate summary for the hiring team…`);
+    showTyping();
+    const summary = await generateSummary();
+    removeTyping();
+    addSummary(summary);
+    addMsg("bot", `You'll receive a personal response from ${COMPANY} within 5 working days regardless of the outcome.\n\nIf you have any questions about how your data is used, you can email privacy@${COMPANY.toLowerCase().replace(/\s+/g,'')+'.ie'}.\n\nGood luck! 🍀`);
+    input.disabled = true;
+    btn.disabled = true;
+    document.getElementById("progressText").textContent = "Screening complete ✓";
+    return;
+  }
+
+  btn.disabled = false;
+}
+</script>
+
+</body>
+</html>
